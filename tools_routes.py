@@ -11,6 +11,7 @@ import random
 import asyncio
 from simple_row import *
 from tools.curl2requests import curl2requests
+from tools.md2tg import markdown_to_html
 import os, logging
 logger = logging.getLogger(name=BOT_NAME)
 
@@ -28,3 +29,7 @@ f"""**🐍 Here's your python request**:
 """
     await message.reply(answer, parse_mode=ParseMode.MARKDOWN_V2)
 
+@router.message(F.text)
+async def process_md(message: Message):
+    await message.react(REACTION_OK)
+    await message.answer(markdown_to_html(message.html_text), parse_mode=ParseMode.HTML)
